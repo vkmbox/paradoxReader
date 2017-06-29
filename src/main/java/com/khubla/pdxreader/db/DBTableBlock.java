@@ -3,6 +3,7 @@ package com.khubla.pdxreader.db;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.charset.Charset;
 
 import com.google.common.io.LittleEndianDataInputStream;
 import com.khubla.pdxreader.api.PDXReaderException;
@@ -66,7 +67,7 @@ public class DBTableBlock {
    /**
     * read data. This assumes that the inputStream is on byte 0 from the start of the block
     */
-   public void read(PDXReaderListener pdxReaderListener, InputStream inputStream) throws PDXReaderException {
+   public void read(PDXReaderListener pdxReaderListener, InputStream inputStream, Charset charset) throws PDXReaderException {
       try {
          records = new ArrayList<DBTableRecord>();
          /*
@@ -79,7 +80,7 @@ public class DBTableBlock {
           */
          for (int i = 0; i < recordsPerBlock; i++) {
             final DBTableRecord pdxTableRecord = new DBTableRecord();
-            pdxTableRecord.read(pdxReaderListener, fields, inputStream);
+            pdxTableRecord.read(pdxReaderListener, fields, inputStream, charset);
             records.add(pdxTableRecord);
          }
       } catch (final Exception e) {

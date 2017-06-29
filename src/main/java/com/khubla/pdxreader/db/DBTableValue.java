@@ -3,6 +3,7 @@ package com.khubla.pdxreader.db;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 
 import com.khubla.pdxreader.api.PDXReaderException;
 import com.khubla.pdxreader.db.DBTableField.FieldType;
@@ -32,7 +33,7 @@ public class DBTableValue {
    /**
     * Read a table field
     */
-   public void read(DBTableField pdxTableField, InputStream inputStream) throws PDXReaderException {
+   public void read(DBTableField pdxTableField, InputStream inputStream, Charset charset) throws PDXReaderException {
       try {
          /*
           * get the data
@@ -45,7 +46,7 @@ public class DBTableValue {
          final FieldType fieldType = pdxTableField.getFieldType();
          switch (fieldType) {
             case A:
-               value = StringUtil.readString(data);
+               value = StringUtil.readString(data, charset);
                break;
             case D:
                final long d = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).getShort();

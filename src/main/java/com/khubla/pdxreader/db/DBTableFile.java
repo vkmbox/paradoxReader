@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Hashtable;
+import java.nio.charset.Charset;
 
 import com.google.common.io.LittleEndianDataInputStream;
 import com.khubla.pdxreader.api.PDXReaderException;
@@ -36,6 +37,20 @@ public class DBTableFile {
    public DBTableFile() {
    }
 
+   public DBTableFile(Charset charset) {
+     this.charset = charset;
+   }
+
+   public DBTableFile(String charsetName) {
+     this.charset = Charset.forName(charsetName); //("windows-1251")
+   }
+   
+   private Charset charset;
+   
+   public Charset getCharset() {
+     return charset;
+   }
+   
    public Hashtable<Integer, DBTableBlock> getBlocks() {
       return blocks;
    }
@@ -110,7 +125,7 @@ public class DBTableFile {
             /*
              * read the block data
              */
-            pdxTableBlock.read(pdxReaderListener, bufferedInputStream);
+            pdxTableBlock.read(pdxReaderListener, bufferedInputStream, charset);
             /*
              * store it. blocks are numbered from 1, not from 0.
              */

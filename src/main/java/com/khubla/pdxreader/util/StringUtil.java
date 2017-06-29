@@ -1,6 +1,7 @@
 package com.khubla.pdxreader.util;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import com.google.common.io.LittleEndianDataInputStream;
 
@@ -19,13 +20,24 @@ public class StringUtil {
    /**
     * read a fixed length string from a byte buffer
     */
-   public static String readString(byte[] data) throws IOException {
-      final StringBuilder stringBuilder = new StringBuilder();
+   public static String readString(byte[] data, Charset charset) throws IOException {
+     /*String result = new String(data, java.nio.charset.Charset.forName("windows-1251"));
+     return result.trim();*/
+      /*final StringBuilder stringBuilder = new StringBuilder();
       int i = 0;
       while ((data[i] != 0) && (i < (data.length - 1))) {
          stringBuilder.append((char) data[i++]);
       }
-      return stringBuilder.toString().trim();
+      return stringBuilder.toString().trim();*/
+      //byte[] buffer = new byte[data.length]; 
+      int len = 0;
+      while ((data[len] != 0) && (len < (data.length - 1))) {
+         len++;
+      }
+      if (charset == null)
+        return new String(data, 0, len);
+      else
+        return new String(data, 0, len, charset);
    }
 
    /**
